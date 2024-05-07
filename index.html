@@ -39,43 +39,43 @@
         <div class="shopping-cart">
 
             <div class="box">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times remove-item"></i>
                 <img src="images/cart1.jpg" alt="">
                 <div class="content">
                     <h3>Cucies</h3>
                     <span class="price">$14.99</span>
                 </div>
             </div>
-
+        
             <div class="box">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times remove-item"></i>
                 <img src="images/cart2.jpg" alt="">
                 <div class="content">
                     <h3>Olive Oil</h3>
                     <span class="price">$15.99</span>
                 </div>
             </div>
-
+        
             <div class="box">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times remove-item"></i>
                 <img src="images/cart3.png" alt="">
                 <div class="content">
-                    <h3>Amzing Drink</h3>
+                    <h3>Amazing Drink</h3>
                     <span class="price">$14.99</span>
                 </div>
             </div>
-
+        
             <div class="box">
-                <i class="fas fa-times"></i>
+                <i class="fas fa-times remove-item"></i>
                 <img src="images/cart4.jpg" alt="">
                 <div class="content">
                     <h3>Pine Apples</h3>
                     <span class="price">$18.99</span>
                 </div>
             </div>
-            <h3 class="total"> total: <span> $56.89</span></h3>
-            <a href="#" class="btn">checkout</a>
-        </div>
+            <h3 class="total">Total: <span>$56.89</span></h3>
+            <a href="#" class="btn">Checkout</a>
+        </div>        
 
 
         <form action="" class="login-form">
@@ -572,5 +572,17 @@
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
     <script src="js/script.js"></script>
+
+    <script>
+        // Add click event listener to all elements with the class "remove-item"
+        document.querySelectorAll('.remove-item').forEach(item => {
+            item.addEventListener('click', event => {
+                // Get the parent element of the clicked "X" icon
+                const box = event.target.closest('.box');
+                // Remove the parent element from the DOM
+                box.remove();
+            });
+        });
+    </script>
 </body>
 </html>
