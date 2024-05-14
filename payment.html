@@ -9,7 +9,7 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/payment.css">
 </head>
 <body>
   <div class="container mt-5">
@@ -25,18 +25,22 @@
                   </div>
                   <div class="form-group">
                     <label for="card-number">Card Number</label>
-                    <input type="text" class="form-control" id="card-number" required>
+                    <input type="text" class="form-control" id="card-number" maxlength="16" required>
                   </div>
                   <div class="form-row">
                     <div class="col">
                       <label for="expiry-date">Expiry Date</label>
-                      <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY" required>
+                      <input type="month" class="form-control" id="expiry-date" placeholder="MM/YY" maxlength="4" required>
                     </div>
                     <div class="col">
                       <label for="cvv">CVV</label>
-                      <input type="text" class="form-control" id="cvv" required>
+                      <input type="text" class="form-control" maxlength="3" id="cvv" required>
                     </div>
                   </div>
+                  <br>
+                  <div class="alert alert-danger" role="alert">
+                    Please don't share your card details with anyone throuh phone calls. We will never ask for your card details.
+                  </div>                  
                   <div class="form-group mt-3">
                     <label for="amount">Total Amount</label>
                     <input type="text" class="form-control" id="amount" value="$56.89" readonly>
@@ -49,12 +53,22 @@
       </div>
     </div>
   </div>
+  <div class="payment-success-alert" id="payment-success-alert">
+    <div class="text-center">
+      <i class="fas fa-truck truck-icon"></i>
+    </div>
+    <h5 class="mt-3">Payment Successful!</h5>
+    <p>Thank you for your payment.</p>
+  </div>
+
   <script>
     document.getElementById("payment-form").addEventListener("submit", function(event) {
       event.preventDefault(); // Prevent default form submission
       // Redirect to the thanks.html page
-      window.location.href = "thanks.html";
+      // window.location.href = "thanks.html"; // For redirection
+      // Show payment success alert
+      document.getElementById("payment-success-alert").style.display = "block";
     });
-  </script>     
+  </script>    
 </body>
 </html>

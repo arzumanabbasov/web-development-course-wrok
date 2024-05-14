@@ -1,7 +1,5 @@
 // Declare variables outside event handlers for global accessibility
 const cart = document.querySelector('.shopping-cart');
-const login = document.querySelector('.login-form');
-const navbar = document.querySelector('.navbar');
 
 // Function to toggle shopping cart
 document.querySelector('#cart-btn').onclick = () => {
@@ -53,43 +51,21 @@ var swiper = new Swiper(".review-slider", {
   },
 });
 
-// Function to update total amount
 function updateTotalAmount() {
   let total = 0;
-  document.querySelectorAll('.box').forEach(item => {
-    // Extract the price from each item
-    let price = parseFloat(item.querySelector('.price').textContent.replace('$', ''));
+  document.querySelectorAll('.shopping-cart .price').forEach(item => {
+    let price = parseFloat(item.textContent.replace('$', ''));
     total += price;
   });
-  // Update the total amount in the HTML
   document.querySelector('.total span').textContent = '$' + total.toFixed(2);
 }
 
 // Event listener for removing items
 document.querySelectorAll('.remove-item').forEach(item => {
   item.addEventListener('click', event => {
-    // Get the parent element of the clicked "X" icon
     const box = event.target.closest('.box');
-    // Remove the parent element from the DOM
     box.remove();
-    // Update the total amount
     updateTotalAmount();
-  });
-});
-
-// Call the function initially to calculate the total amount
-updateTotalAmount();
-
-// Select all elements with class "add-to-cart" and attach click event listener
-document.querySelectorAll('.add-to-cart').forEach(item => {
-  item.addEventListener('click', event => {
-    // Find the parent element (product) of the clicked icon
-    const product = event.target.closest('.product');
-    // Extract product details
-    const productName = product.querySelector('h3').textContent;
-    const productPrice = parseFloat(product.querySelector('.price').textContent.replace('$', ''));
-    // Add product to shopping cart
-    addToCart(productName, productPrice);
   });
 });
 
@@ -97,41 +73,46 @@ document.querySelectorAll('.add-to-cart').forEach(item => {
 function addToCart(name, price) {
   // Create a new cart item element
   const cartItem = document.createElement('div');
-  cartItem.classList.add('cart-item');
+  cartItem.classList.add('box'); // Change class to 'box' to match the shopping cart item structure
+
+  // Extract the product number from the name (assuming the name format is "Product X")
+  const productNumber = parseInt(name.split(' ')[1]);
+
+  // Construct the image source dynamically
+  const imageSrc = `images/product-${productNumber}.jpg`;
 
   // Construct the cart item HTML content
   cartItem.innerHTML = `
-      <span class="item-name">${name}</span>
-      <span class="item-price">$${price.toFixed(2)}</span>
-      <button class="remove-item-btn">Remove</button>
+    <i class="fas fa-times remove-item"></i>
+    <img src="${imageSrc}" alt="${name}">
+    <div class="content">
+      <h3>${name}</h3>
+      <span class="price">$${price.toFixed(2)}</span>
+    </div>
   `;
 
-  // Append the cart item to the shopping cart
-  cart.appendChild(cartItem);
+  // Find the position of the "Total" section and insert the new cart item before it
+  const totalSection = document.querySelector('.shopping-cart .total');
+  cart.insertBefore(cartItem, totalSection);
 
-  // Calculate total price
-  let total = 0;
-  document.querySelectorAll('.item-price').forEach(item => {
-    total += parseFloat(item.textContent.replace('$', ''));
-  });
-
-  // Update total price in the UI
-  document.querySelector('.total span').textContent = `$${total.toFixed(2)}`;
+  // Update total amount in the UI
+  updateTotalAmount();
 
   // Add event listener to remove button
-  cartItem.querySelector('.remove-item-btn').addEventListener('click', () => {
+  cartItem.querySelector('.remove-item').addEventListener('click', () => {
     // Remove the cart item from the shopping cart
     cartItem.remove();
     // Recalculate total price after item removal
-    let updatedTotal = 0;
-    document.querySelectorAll('.item-price').forEach(item => {
-      updatedTotal += parseFloat(item.textContent.replace('$', ''));
-    });
-    // Update total price in the UI after item removal
-    document.querySelector('.total span').textContent = `$${updatedTotal.toFixed(2)}`;
+    updateTotalAmount();
   });
-
-  // Log message to console
-  console.log(`Added to cart: ${name} - $${price}`);
-  // Here you can update the UI to reflect the added product, such as updating the shopping cart icon or displaying a notification
 }
+
+// Select all shopping cart icons in the product section and attach click event listener
+document.querySelectorAll('.fa-shopping-cart').forEach(cartIcon => {
+  cartIcon.addEventListener('click', event => {
+    const product = event.target.closest('.box');
+    const productName = product.querySelector('h3').textContent;
+    const productPrice = parseFloat(product.querySelector('.price').textContent.replace('$', ''));
+    addToCart(productName, productPrice);
+  });
+});

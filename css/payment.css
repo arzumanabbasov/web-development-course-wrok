@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+
+:root{
+  --primary-color: #FF9F1C;
+  --secondary :#2EC4B6;
+  --bg: #CBF3F0;
+  --black: #1c2137;
+  --white: #fff;
+  --box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+*{
+  font-family: 'Roboto', sans-serif;
+  margin: 0; 
+  padding: 0;
+  box-sizing: border-box;
+  outline: none; 
+  border: none;
+  text-decoration: none;
+  transition: .2s linear;
+}
+
+body {
+  background: linear-gradient(to right, var(--primary-color), var(--secondary));
+}
+
+.container {
+  max-width: 960px;
+}
+
+.card {
+  margin-top: 100px;
+  border-radius: 10px;
+  box-shadow: var(--box-shadow);
+}
+
+.card-header {
+  border-radius: 10px 10px 0 0;
+  padding: 20px;
+}
+
+.card-body {
+  padding: 20px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-row .col {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+  /* Centered alert */
+  .payment-success-alert {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
+
+  /* Animation for truck */
+  @keyframes moveTruck {
+    0% { left: -100px; }
+    100% { left: calc(50% - 50px); }
+  }
+  .truck-icon {
+    font-size: 48px;
+    animation: moveTruck 3s ease-in-out infinite;
+  }
+
+@media (max-width: 768px) {
+  .card {
+    margin-top: 50px;
+  }
+}
