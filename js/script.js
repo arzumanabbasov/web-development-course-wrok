@@ -1,33 +1,35 @@
 // Declare variables outside event handlers for global accessibility
 const cart = document.querySelector('.shopping-cart');
+const login = document.querySelector('.login-form');
+const navbar = document.querySelector('.navbar');
 
 // Function to toggle shopping cart
 document.querySelector('#cart-btn').onclick = () => {
   cart.classList.toggle('active');
   login.classList.remove('active');
   navbar.classList.remove('active');
-}
+};
 
 // Function to toggle login form
 document.querySelector('#login-btn').onclick = () => {
   login.classList.toggle('active');
   cart.classList.remove('active');
   navbar.classList.remove('active');
-}
+};
 
 // Function to toggle navbar
 document.querySelector('#menu-btn').onclick = () => {
   navbar.classList.toggle('active');
   cart.classList.remove('active');
   login.classList.remove('active');
-}
+};
 
 // Close components on scroll
 window.onscroll = () => {
   cart.classList.remove('active');
   login.classList.remove('active');
   navbar.classList.remove('active');
-}
+};
 
 // Initialize Swiper for Review Slider
 var swiper = new Swiper(".review-slider", {
@@ -71,17 +73,12 @@ document.querySelectorAll('.remove-item').forEach(item => {
 
 // Function to add items to cart
 function addToCart(name, price) {
-  // Create a new cart item element
   const cartItem = document.createElement('div');
-  cartItem.classList.add('box'); // Change class to 'box' to match the shopping cart item structure
+  cartItem.classList.add('box');
 
-  // Extract the product number from the name (assuming the name format is "Product X")
   const productNumber = parseInt(name.split(' ')[1]);
-
-  // Construct the image source dynamically
   const imageSrc = `images/product-${productNumber}.jpg`;
 
-  // Construct the cart item HTML content
   cartItem.innerHTML = `
     <i class="fas fa-times remove-item"></i>
     <img src="${imageSrc}" alt="${name}">
@@ -91,28 +88,48 @@ function addToCart(name, price) {
     </div>
   `;
 
-  // Find the position of the "Total" section and insert the new cart item before it
   const totalSection = document.querySelector('.shopping-cart .total');
   cart.insertBefore(cartItem, totalSection);
 
-  // Update total amount in the UI
   updateTotalAmount();
 
-  // Add event listener to remove button
   cartItem.querySelector('.remove-item').addEventListener('click', () => {
-    // Remove the cart item from the shopping cart
     cartItem.remove();
-    // Recalculate total price after item removal
     updateTotalAmount();
   });
 }
 
-// Select all shopping cart icons in the product section and attach click event listener
-document.querySelectorAll('.fa-shopping-cart').forEach(cartIcon => {
+// Select all heart icons and attach click event listener
+document.querySelectorAll('.fa-heart').forEach(cartIcon => {
   cartIcon.addEventListener('click', event => {
-    const product = event.target.closest('.box');
+    const product = event.target.closest('.content');
     const productName = product.querySelector('h3').textContent;
     const productPrice = parseFloat(product.querySelector('.price').textContent.replace('$', ''));
     addToCart(productName, productPrice);
   });
 });
+
+// When user logs in, display a welcome message with the user's name
+document.querySelector('#login-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const email = document.querySelector('#email').value;
+  document.querySelector('#welcome-message').textContent = `Welcome, ${email}!`;
+  document.querySelector('#login-form').reset();
+  login.classList.remove('active');
+  document.querySelector('#login-btn').style.display = 'none';
+});
+
+// Event listener for the shopping basket icon to redirect to payment page
+document.querySelectorAll('.fa-shopping-cart').forEach(item => {
+  item.addEventListener('click', event => {
+    const contentElement = event.target.closest('.content');
+    if (contentElement) {
+      const priceElement = contentElement.querySelector('.price');
+      if (priceElement) {
+        const price = priceElement.textContent.trim().replace('$', '');
+        window.location.href = `payment.html?price=${price}`;
+      }
+    }
+  });
+});
+
